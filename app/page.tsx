@@ -1,15 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import { CopilotKit } from "@copilotkit/react-core";
 import { CopilotSidebar } from "@copilotkit/react-ui";
 import "@copilotkit/react-ui/styles.css";
 import { TodoApp } from "@/components/TodoApp";
+import { VoiceButton } from "@/components/VoiceButton";
 
 export default function Home() {
+  const [isChatOpen, setIsChatOpen] = useState(true);
+
   return (
     <CopilotKit runtimeUrl="/api/copilotkit" showDevConsole={false}>
       <CopilotSidebar
         defaultOpen={true}
+        clickOutsideToClose={false}
+        onSetOpen={setIsChatOpen}
         labels={{
           title: "Assistente de Tarefas",
           initial: "Olá! Posso ajudar você a gerenciar suas tarefas.\n\nExperimente:\n• \"Adicione comprar pão\"\n• \"Marque a tarefa 1 como concluída\"\n• \"Quais tarefas tenho?\"\n• \"Limpe as tarefas concluídas\"",
@@ -19,6 +25,8 @@ export default function Home() {
       >
         <TodoApp />
       </CopilotSidebar>
+      {/* VoiceButton só aparece se o chat estiver aberto */}
+      {isChatOpen && <VoiceButton />}
     </CopilotKit>
   );
 }
